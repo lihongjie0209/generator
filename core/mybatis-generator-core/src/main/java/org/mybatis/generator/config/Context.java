@@ -431,6 +431,7 @@ public class Context extends PropertyHolder {
         return steps;
     }
 
+    // 生成文件
     public void generateFiles(ProgressCallback callback,
             List<GeneratedJavaFile> generatedJavaFiles,
             List<GeneratedXmlFile> generatedXmlFiles,
@@ -443,7 +444,7 @@ public class Context extends PropertyHolder {
             Plugin plugin = ObjectFactory.createPlugin(this,
                     pluginConfiguration);
             if (plugin.validate(warnings)) {
-                pluginAggregator.addPlugin(plugin);
+                pluginAggregator.addPlugin(plugin); // 把所有合法的插件添加进来
             } else {
                 warnings.add(getString("Warning.24", //$NON-NLS-1$
                         pluginConfiguration.getConfigurationType(), id));
@@ -457,12 +458,13 @@ public class Context extends PropertyHolder {
                 introspectedTable.initialize();
                 introspectedTable.calculateGenerators(warnings, callback);
                 generatedJavaFiles.addAll(introspectedTable
-                        .getGeneratedJavaFiles());
+                        .getGeneratedJavaFiles()); // java文件
                 generatedXmlFiles.addAll(introspectedTable
-                        .getGeneratedXmlFiles());
+                        .getGeneratedXmlFiles()); // xml文件
                 generatedKotlinFiles.addAll(introspectedTable
-                        .getGeneratedKotlinFiles());
+                        .getGeneratedKotlinFiles()); // kt文件
 
+                // 插件生成的文件
                 generatedJavaFiles.addAll(pluginAggregator
                         .contextGenerateAdditionalJavaFiles(introspectedTable));
                 generatedXmlFiles.addAll(pluginAggregator

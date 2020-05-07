@@ -211,29 +211,33 @@ public class MyBatisGenerator {
             Set<String> fullyQualifiedTableNames, boolean writeFiles) throws SQLException,
             IOException, InterruptedException {
 
+        // 空对象模式
         if (callback == null) {
             callback = new NullProgressCallback();
         }
 
+        // 清理一下状态, 方便多次调用
         generatedJavaFiles.clear();
         generatedXmlFiles.clear();
         ObjectFactory.reset();
         RootClassInfo.reset();
 
+        // 确定运行的上下文
         // calculate the contexts to run
         List<Context> contextsToRun;
-        if (contextIds == null || contextIds.isEmpty()) {
-            contextsToRun = configuration.getContexts();
+        if (contextIds == null || contextIds.isEmpty()) { // 没有指定
+            contextsToRun = configuration.getContexts(); // 全部上下文
         } else {
             contextsToRun = new ArrayList<>();
             for (Context context : configuration.getContexts()) {
                 if (contextIds.contains(context.getId())) {
-                    contextsToRun.add(context);
+                    contextsToRun.add(context); // 指定的上下文
                 }
             }
         }
 
         // setup custom classloader if required
+        // 配置classloader
         if (!configuration.getClassPathEntries().isEmpty()) {
             ClassLoader classLoader = getCustomClassloader(configuration.getClassPathEntries());
             ObjectFactory.addExternalClassLoader(classLoader);
@@ -263,6 +267,7 @@ public class MyBatisGenerator {
                     generatedXmlFiles, generatedKotlinFiles, warnings);
         }
 
+        // 保存文件
         // now save the files
         if (writeFiles) {
             callback.saveStarted(generatedXmlFiles.size()

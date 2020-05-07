@@ -63,12 +63,12 @@ public class IntrospectedTableMyBatis3Impl extends IntrospectedTable {
     @Override
     public void calculateGenerators(List<String> warnings,
             ProgressCallback progressCallback) {
-        calculateJavaModelGenerators(warnings, progressCallback);
+        calculateJavaModelGenerators(warnings, progressCallback); // 初始化java代码生成器
         
         AbstractJavaClientGenerator javaClientGenerator =
                 calculateClientGenerators(warnings, progressCallback);
             
-        calculateXmlMapperGenerator(javaClientGenerator, warnings, progressCallback);
+        calculateXmlMapperGenerator(javaClientGenerator, warnings, progressCallback); // 初始化xml生成器
     }
 
     protected void calculateXmlMapperGenerator(AbstractJavaClientGenerator javaClientGenerator, 
